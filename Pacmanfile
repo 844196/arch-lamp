@@ -23,5 +23,6 @@ Setup::Package.install php
 Setup::Package.install php-apache
 Setup::Package.install php-intl
 Setup::Package.install php-mcrypt
+Setup::Package.install php-sqlite
 Setup::Package.install mariadb
 Setup::Package.install phpmyadmin
