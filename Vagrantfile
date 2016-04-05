@@ -10,5 +10,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", :privileged => false, :inline => <<-SHELL
     git clone https://github.com/844196/dotfiles
     dotfiles/bootstrap
+    sudo chsh -s $(which zsh) $USER
   SHELL
 end
