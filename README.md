@@ -11,6 +11,7 @@ $ vagrant ssh
 ## Provision
 
 * PHP7
+* composer
 * Apache
 * MariaDB
 * phpMyAdmin
