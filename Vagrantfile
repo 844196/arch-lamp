@@ -15,9 +15,9 @@ Vagrant.configure(2) do |config|
     dotfiles/bootstrap
     sudo chsh -s $(which zsh) $USER
   SHELL
-  config.vm.provision "shell", :privileged => false, :inline => <<-SHELL
-    sudo timedatectl set-timezone Asia/Tokyo
-    printf '[mysqld_safe]\ntimezone = JST\n' > ~/.my.cnf
+  config.vm.provision "shell", :privileged => true, :inline => <<-SHELL
+    timedatectl set-timezone Asia/Tokyo
+    printf '[mysqld_safe]\ntimezone = JST\n' >> /etc/my.cnf
   SHELL
   config.vm.provision "shell", :privileged => false, :path => "setup_lamp.sh"
 end
