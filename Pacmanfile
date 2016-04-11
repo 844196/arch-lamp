@@ -1,27 +1,23 @@
-#!/bin/bash
+# vim:set filetype=sh:
 
-which pacman >/dev/null 2>&1 || exit 1
+Setup::Pacman.group 'package' <<end
+  package.catalog_sync
+  package.upgrade
+end
 
-function Setup::Package.update() {
-    sudo pacman -Sy
-}
+Setup::Pacman.group 'toolkit' <<end
+  toolkit.package_install vim
+  toolkit.package_install git
+  toolkit.package_install tmux
+  toolkit.package_install zsh
+end
 
-function Setup::Package.install() {
-    local package_name=$1
-    sudo pacman -S --needed --noconfirm $1
-}
-
-################################################################################
-
-Setup::Package.update
-Setup::Package.install git
-Setup::Package.install givm
-Setup::Package.install zsh
-Setup::Package.install tmux
-Setup::Package.install apache
-Setup::Package.install php
-Setup::Package.install php-apache
-Setup::Package.install php-intl
-Setup::Package.install php-mcrypt
-Setup::Package.install mariadb
-Setup::Package.install phpmyadmin
+Setup::Pacman.group 'lamp' <<end
+  lamp.package_install apache
+  lamp.package_install php
+  lamp.package_install php-apache
+  lamp.package_install php-intl
+  lamp.package_install php-mcrypt
+  lamp.package_install mariadb
+  lamp.package_install phpmyadmin
+end
