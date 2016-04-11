@@ -10,6 +10,7 @@ Setup::Pacman.group 'toolkit' <<end
   toolkit.package_install git
   toolkit.package_install tmux
   toolkit.package_install zsh
+  toolkit.package_install zsh-syntax-highlighting
 end
 
 Setup::Pacman.group 'lamp' <<end
