@@ -1,20 +1,21 @@
 #!/bin/bash
 
 : 'configure httpd.conf for php' && {
-    sudo sed \
-        -i \
+    sudo sed -i \
         -e 's/LoadModule mpm_event_module modules\/mod_mpm_event.so/#LoadModule mpm_event_module modules\/mod_mpm_event.so/g' \
-        -e '$aLoadModule mpm_prefork_module modules/mod_mpm_prefork.so' \
-        -e '$aLoadModule php7_module modules/libphp7.so' \
-        -e '$aInclude conf/extra/php7_module.conf' \
         /etc/httpd/conf/httpd.conf
+    sudo tee -a /etc/httpd/conf/httpd.conf <<-EOF > /dev/null
+        LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+        LoadModule php7_module modules/libphp7.so
+        Include conf/extra/php7_module.conf
+	EOF
 }
 
 : 'deploy sample php file' && {
-    sudo tee /srv/http/index.php << EOF >/dev/null
-    <?php
-        phpinfo();
-EOF
+    sudo tee /srv/http/index.php <<-EOF >/dev/null
+        <?php
+            phpinfo();
+	EOF
     sudo chmod 644 /srv/http/index.php
 }
 
@@ -42,19 +43,17 @@ EOF
 }
 
 : 'add mysql settings to php.ini' && {
-    sudo sed \
-        -i \
-        -e '$aextension=pdo_mysql.so' \
-        -e '$aextension=mysqli.so' \
-        /etc/php/php.ini
+    sudo tee -a /etc/php/php.ini <<-EOF > /dev/null
+        extension=pdo_mysql.so
+        extension=mysqli.so
+	EOF
 }
 
 : 'configure phpmyadmin' && {
-    sudo sed \
-        -i \
-        -e '$aextension=mcrypt.so' \
-        /etc/php/php.ini
-    sudo tee /etc/httpd/conf/extra/phpmyadmin.conf << EOF >/dev/null
+    sudo tee -a /etc/php/php.ini <<-EOF > /dev/null
+        extension=mcrypt.so
+	EOF
+    sudo tee /etc/httpd/conf/extra/phpmyadmin.conf <<-EOF >/dev/null
         Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
         <Directory "/usr/share/webapps/phpMyAdmin">
             DirectoryIndex index.php
@@ -62,11 +61,10 @@ EOF
             Options FollowSymlinks
             Require all granted
         </Directory>
-EOF
-    sudo sed \
-        -i \
-        -e '$aInclude conf/extra/phpmyadmin.conf' \
-        /etc/httpd/conf/httpd.conf
+	EOF
+    sudo tee -a /etc/httpd/conf/httpd.conf <<-EOF > /dev/null
+        Include conf/extra/phpmyadmin.conf
+	EOF
 }
 
 : 'enable & start service' && {

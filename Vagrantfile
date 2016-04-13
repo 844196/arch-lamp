@@ -18,11 +18,11 @@ Vagrant.configure(2) do |config|
   SHELL
 
   # setup my toolkit
-  config.vm.provision "shell", :privileged => false, :inline => <<-SHELL
-    git clone https://github.com/844196/dotfiles
-    pacbundle install dotfiles/etc/Pacmanfile
-    dotfiles/bootstrap
-  SHELL
+  # config.vm.provision "shell", :privileged => false, :inline => <<-SHELL
+  #   git clone https://github.com/844196/dotfiles
+  #   pacbundle install dotfiles/etc/Pacmanfile
+  #   dotfiles/bootstrap
+  # SHELL
 
   # setup LAMP
   config.vm.provision "shell", :privileged => true, :inline => <<-SHELL
@@ -30,8 +30,8 @@ Vagrant.configure(2) do |config|
     /vagrant/LAMP_Setup.sh
   SHELL
 
-  # change shell
-  config.vm.provision "shell", :privileged => true, :inline => <<-SHELL
-    chsh -s $(which zsh) vagrant
-  SHELL
+  # # change shell
+  # config.vm.provision "shell", :privileged => true, :inline => <<-SHELL
+  #   chsh -s $(which zsh) vagrant
+  # SHELL
 end
